@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateRemainingCount() {
         remainingCount = questions.length;
 
-        // Check if each question is answered
+        // Check if each question has at least one checkbox selected
         questions.forEach(function (question) {
-            if (question.querySelector('input[type="radio"]:checked')) {
+            if (question.querySelector('input[type="checkbox"]:checked')) {
                 remainingCount--;
             }
         });
@@ -26,27 +26,23 @@ document.addEventListener('DOMContentLoaded', function () {
         remainingCountElement.textContent = remainingCount;
     }
 
-    // Attach event listeners to all radio buttons to detect answer selection
+    // Attach event listeners to all checkboxes to detect answer selection
     questions.forEach(function (question) {
-        question.querySelectorAll('input[type="radio"]').forEach(function (radio) {
-            radio.addEventListener('change', updateRemainingCount);  // Update count when an answer is selected
+        question.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+            checkbox.addEventListener('change', updateRemainingCount);  // Update count when an answer is selected
         });
     });
 
     // Form submission handling
     form.addEventListener('submit', function (event) {
         if (remainingCount > 0) {
-            event.preventDefault();
-            alert('Please answer all questions before submitting the test.');
-        } else {
-            questions.forEach(function (question) {
-                const selectedAnswer = question.querySelector('input[type="radio"]:checked');
+            // Show a warning message if there are unanswered questions
+            const confirmSubmission = confirm('You have unanswered questions. Are you sure you want to submit without answering them?');
 
-                // Adjust the index of selected answer before submission (add 1)
-                if (selectedAnswer) {
-                    selectedAnswer.value = parseInt(selectedAnswer.value) + 1;
-                }
-            });
+            // Allow the form to submit regardless of the user's choice
+            if (!confirmSubmission) {
+                event.preventDefault();  // Only prevent submission if the user clicks "Cancel"
+            }
         }
     });
 });

@@ -3,43 +3,101 @@
 <head>
     <title>Add Questions</title>
     <link rel="stylesheet" href="/css/lecturer.css">
+    <script>
+        // JavaScript to toggle between question types and dynamically show fields
+        function toggleQuestionType() {
+            const questionType = document.getElementById("questionType").value;
+            const multipleChoiceFields = document.getElementById("multipleChoiceFields");
+            const trueFalseField = document.getElementById("trueFalseField");
+
+            if (questionType === "MULTIPLE_CHOICE") {
+                multipleChoiceFields.style.display = "block";
+                trueFalseField.style.display = "none";
+
+                // Enable required for multiple choice fields
+                document.getElementById("answer1").required = true;
+                document.getElementById("answer2").required = true;
+                document.getElementById("correctAnswerIndices").required = true;
+
+                // Disable required for true/false field
+                document.getElementById("correctAnswer").required = false;
+
+            } else {
+                multipleChoiceFields.style.display = "none";
+                trueFalseField.style.display = "block";
+
+                // Disable required for multiple choice fields
+                document.getElementById("answer1").required = false;
+                document.getElementById("answer2").required = false;
+                document.getElementById("correctAnswerIndices").required = false;
+
+                // Enable required for true/false field
+                document.getElementById("correctAnswer").required = true;
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <h1>Add Questions to Test</h1>
+
     <form th:action="@{'/lecturer/add_questions/' + ${testId}}" method="post">
+        <!-- Question Text -->
         <div class="form-group">
             <label for="questionText">Question:</label>
             <input type="text" id="questionText" name="questionText" required>
         </div>
 
+        <!-- Question Type Selection -->
         <div class="form-group">
-            <label for="answer1">Answer 1:</label>
-            <input type="text" id="answer1" name="answerOptions[0]" required>
+            <label for="questionType">Question Type:</label>
+            <select id="questionType" name="questionType" onchange="toggleQuestionType()" required>
+                <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+                <option value="TRUE_FALSE">True/False</option>
+            </select>
         </div>
 
-        <div class="form-group">
-            <label for="answer2">Answer 2:</label>
-            <input type="text" id="answer2" name="answerOptions[1]" required>
+        <!-- Multiple Choice Options (Hidden by Default for True/False) -->
+        <div id="multipleChoiceFields" style="display: none;">
+            <div class="form-group">
+                <label for="answer1">Answer 1:</label>
+                <input type="text" id="answer1" name="answerOptions[0]" required>
+            </div>
+            <div class="form-group">
+                <label for="answer2">Answer 2:</label>
+                <input type="text" id="answer2" name="answerOptions[1]" required>
+            </div>
+            <div class="form-group">
+                <label for="answer3">Answer 3:</label>
+                <input type="text" id="answer3" name="answerOptions[2]">
+            </div>
+            <div class="form-group">
+                <label for="answer4">Answer 4:</label>
+                <input type="text" id="answer4" name="answerOptions[3]">
+            </div>
+            <div class="form-group">
+                <label for="correctAnswerIndices">Correct Answer Indices (comma-separated):</label>
+                <input type="text" id="correctAnswerIndices" name="correctAnswerIndices" placeholder="E.g. 0,1" required>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="answer3">Answer 3:</label>
-            <input type="text" id="answer3" name="answerOptions[2]" required>
+        <!-- True/False Field (Hidden by Default for Multiple Choice) -->
+        <div id="trueFalseField" style="display: none;">
+            <label for="correctAnswer">Correct Answer:</label>
+            <select id="correctAnswer" name="correctAnswer">
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
         </div>
 
-        <div class="form-group">
-            <label for="answer4">Answer 4:</label>
-            <input type="text" id="answer4" name="answerOptions[3]" required>
-        </div>
-
-        <div class="form-group">
-            <label for="correctAnswerIndex">Correct Answer (Index):</label>
-            <input type="number" id="correctAnswerIndex" name="correctAnswerIndex" required>
-        </div>
-
+        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Add Question</button>
     </form>
 </div>
+
+<script>
+    // Initial toggle on page load to set up default visibility
+    toggleQuestionType();
+</script>
 </body>
 </html>

@@ -14,10 +14,16 @@ public class Question {
 
     private String questionText;
 
+    @Enumerated(EnumType.STRING)
+    private TestType questionType;  // Add this field to define question type
+
     @ElementCollection
     private List<String> answerOptions;
 
-    private int correctAnswerIndex;
+    @ElementCollection
+    private List<Integer> correctAnswerIndices;
+
+    private Boolean correctAnswer;  // For True/False
 
     @ManyToOne
     @JoinColumn(name = "test_id")

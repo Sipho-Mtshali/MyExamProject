@@ -56,4 +56,11 @@ public class UserService {
     public void logoutUser() {
         session.invalidate();  // Invalidate session when the user logs out
     }
+
+    public void registerUser(Users user) {
+        // Encode password before saving
+        user.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw(user.getPassword(), org.mindrot.jbcrypt.BCrypt.gensalt()));
+        usersRepository.save(user);
+    }
+
 }

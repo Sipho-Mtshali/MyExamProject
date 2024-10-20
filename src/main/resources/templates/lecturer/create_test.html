@@ -15,10 +15,22 @@
         <textarea id="description" name="description"></textarea>
 
         <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" required>
+        <input type="datetime-local" id="startDate" name="startDate" required>
 
         <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" required>
+        <input type="datetime-local" id="endDate" name="endDate" required>
+
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" id="duration" name="duration" min="1" required>
+
+        <label for="testType">Test Type:</label>
+        <select name="testType" id="testType" required>
+            <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+            <option value="TRUE_FALSE">True/False</option>
+        </select>
+
+        <label for="testAttempts">Number of Attempts:</label>
+        <input type="number" id="testAttempts" name="testAttempts" min="1" required>
 
         <button type="submit">Create Test</button>
     </form>

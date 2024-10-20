@@ -3,6 +3,7 @@ package org.onlinetestsystem.onlinetest.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,4 +25,9 @@ public class StudentAnswer {
 
     @ElementCollection
     private List<Integer> selectedAnswers = new ArrayList<>();  // Store answers as index values from the options
+
+    // New fields to track submission status and time
+    private boolean submitted;  // Whether the test has been submitted
+
+    private LocalDateTime submissionTime;  // The time whe
 }

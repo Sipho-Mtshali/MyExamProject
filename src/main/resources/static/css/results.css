@@ -1,0 +1,94 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container for the results */
+h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Styling each result */
+li {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 16px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Test name and score */
+span {
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+/* Passed/Failed status */
+span:last-child {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: #fff;
+    text-align: center;
+}
+
+/* Passed styling */
+.passed {
+    background-color: #27ae60;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+/* Failed styling */
+.failed {
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+
+/* Mobile responsive design */
+@media only screen and (max-width: 768px) {
+    ul {
+        padding: 0 20px;
+    }
+
+    li {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    span {
+        margin: 5px 0;
+    }
+}

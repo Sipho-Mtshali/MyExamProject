@@ -9,8 +9,12 @@ import org.onlinetestsystem.onlinetest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -33,6 +37,23 @@ public class LecturerController {
         model.addAttribute("tests", testService.getTestsByLecturer(lecturer));  // Show only the tests for the lecturer
         return "lecturer/dashboard";
     }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(LocalDateTime.class, "startDate", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(LocalDateTime.parse(text, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            }
+        });
+        binder.registerCustomEditor(LocalDateTime.class, "endDate", new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(LocalDateTime.parse(text, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            }
+        });
+    }
+
 
     // Create test form
     @GetMapping("/create_test")
