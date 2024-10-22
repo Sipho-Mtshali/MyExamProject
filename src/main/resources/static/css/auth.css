@@ -12,24 +12,29 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f5f5f5; /* Removed background image */
+    background: linear-gradient(135deg, #2b1055, #7597de);
 }
 
 section {
-    position: relative;
-    max-width: 550px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+form {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    color: white;
 }
 
 h1 {
-    font-size: 1.8rem;
-    color: #333;
-    text-align: center;
     margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: white;
 }
 
 .inputbox {
@@ -37,51 +42,67 @@ h1 {
     margin-bottom: 20px;
 }
 
+.inputbox ion-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.4rem; /* Icon size kept large */
+    pointer-events: none;
+}
+
 .inputbox input,
 .inputbox select {
     width: 100%;
-    padding: 10px;
-    background: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px 12px 12px 45px; /* Adjusted for larger icons */
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
     font-size: 1rem;
     outline: none;
-    color: #333;
+    appearance: none;
 }
 
-.inputbox ion-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #999;
+.inputbox input:focus,
+.inputbox select:focus {
+    border-bottom-color: rgba(255, 255, 255, 0.9);
 }
 
 .inputbox label {
     position: absolute;
     top: 12px;
-    left: 10px;
-    color: #999;
+    left: 45px; /* Aligned with input padding */
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
-    transition: 0.2s;
+    transition: 0.3s;
+    pointer-events: none;
 }
 
+/* Label shifts up when input is filled or focused */
 input:focus ~ label,
-input:valid ~ label,
+input:not(:placeholder-shown) ~ label,
 select:focus ~ label,
-select:valid ~ label {
-    top: -12px;
-    left: 10px;
+select:not([value=""]) ~ label {
+    top: -10px;
     font-size: 0.8rem;
-    color: #666;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Role dropdown styling with black text for visibility */
+select {
+    cursor: pointer;
+    color: black; /* Black text for better visibility */
+    background-color: white; /* Optional: Makes dropdown more readable */
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #333;
+    padding: 12px;
+    background: linear-gradient(135deg, #6c63ff, #3b3b98);
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -89,26 +110,24 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background: linear-gradient(135deg, #3b3b98, #6c63ff);
 }
 
 .register {
-    text-align: center;
     margin-top: 15px;
 }
 
 .register p {
     font-size: 0.9rem;
-    color: #333;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-.register p a {
-    color: #333;
+.register a {
+    color: white;
     text-decoration: underline;
 }
 
 .error {
-    color: red;
-    text-align: center;
+    color: #ff4c4c;
     margin-bottom: 15px;
 }

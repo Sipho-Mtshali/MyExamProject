@@ -5,14 +5,29 @@
     <link rel="stylesheet" href="/css/results.css">
 </head>
 <body>
-<h1>Test Results</h1>
-<ul>
-    <li th:each="result : ${results}">
-        <span th:text="${result.test.name}">Test Name</span> -
-        <span th:text="${result.score}">Score</span> -
-        <span th:classappend="${result.passed} ? 'passed' : 'failed'"
-              th:text="${result.passed ? 'Passed' : 'Failed'}"></span>
-    </li>
-</ul>
+<div class="container">
+    <h1>Test Results</h1>
+    <table class="results-table">
+        <thead>
+        <tr>
+            <th>Test Name</th>
+            <th>Score</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result : ${results}">
+            <td th:text="${result.test.name}">Test Name</td>
+            <td class="score-cell" th:text="${result.score}">Score</td>
+            <td>
+                        <span class="status-badge"
+                              th:classappend="${result.passed} ? 'passed' : 'failed'"
+                              th:text="${result.passed ? 'Passed' : 'Failed'}">
+                        </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

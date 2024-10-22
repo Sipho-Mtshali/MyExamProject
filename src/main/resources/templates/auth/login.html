@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="/css/auth.css" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -9,35 +10,42 @@
     <script src="/js/login.js" defer></script>
 </head>
 <body>
-<section>
-    <form action="/auth/login" method="post">
+<div class="login-container">
+    <form action="/auth/login" method="post" class="login-card">
+        <div class="avatar">
+            <ion-icon name="person-circle-outline"></ion-icon>
+        </div>
+
         <h1>Login</h1>
 
         <!-- Error message -->
         <div th:if="${error}" th:text="${error}" class="error"></div>
 
         <div class="inputbox">
-            <ion-icon name="person-outline"></ion-icon>
-            <input type="text" id="username" name="username" placeholder="" required>
-            <label for="username">Username</label>
+            <ion-icon name="mail-outline"></ion-icon>
+            <input type="text" id="username" name="username" placeholder=" " required>
+            <label for="username">Email ID</label>
         </div>
 
         <div class="inputbox">
             <ion-icon name="lock-closed-outline"></ion-icon>
-            <input type="password" id="password" name="password" placeholder="" required>
+            <input type="password" id="password" name="password" placeholder=" " required>
             <label for="password">Password</label>
         </div>
 
-        <button type="submit">Log in</button>
-
-        <div class="register">
-            <p><a href="#">Forgot Password?</a></p>
+        <div class="options">
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+            <a href="#">Forgot Password?</a>
         </div>
+
+        <button type="submit">Login</button>
 
         <div class="register">
             <p>Don't have an account? <a href="/auth/register">Register here</a></p>
         </div>
     </form>
-</section>
+</div>
 </body>
 </html>

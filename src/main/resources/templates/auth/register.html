@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
   <link href="/css/auth.css" rel="stylesheet">
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -17,32 +18,32 @@
 
     <div class="inputbox">
       <ion-icon name="person-outline"></ion-icon>
-      <input type="text" id="fullName" name="fullName" placeholder="" required>
+      <input type="text" id="fullName" name="fullName" placeholder=" " required>
       <label for="fullName">Full Name</label>
     </div>
 
     <div class="inputbox">
       <ion-icon name="mail-outline"></ion-icon>
-      <input type="text" id="username" name="username" placeholder="" required>
+      <input type="text" id="username" name="username" placeholder=" " required>
       <label for="username">Student No.</label>
     </div>
 
     <div class="inputbox">
       <ion-icon name="lock-closed-outline"></ion-icon>
-      <input type="password" id="password" name="password" placeholder="" required>
+      <input type="password" id="password" name="password" placeholder=" " required>
       <label for="password">Password</label>
     </div>
 
     <div class="inputbox">
       <ion-icon name="lock-closed-outline"></ion-icon>
-      <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="" required>
+      <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder=" " required>
       <label for="passwordConfirm">Confirm Password</label>
     </div>
 
     <div class="inputbox">
       <ion-icon name="person-outline"></ion-icon>
       <select id="role" name="role" required>
-        <option value="" disabled selected></option>
+        <option value="" disabled selected>Select Role</option>
         <option value="STUDENT">Student</option>
         <option value="LECTURER">Lecturer</option>
       </select>
