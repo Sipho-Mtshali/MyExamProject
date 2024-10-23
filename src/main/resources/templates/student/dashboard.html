@@ -3,48 +3,86 @@
 <head>
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="/css/student_dashboard.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="dashboard">
-    <!-- Vertical Sidebar -->
     <aside class="sidebar">
-        <ul>
-            <li><a href="/student/dashboard">Dashboard</a></li>
-            <li><a href="/student/results">View Results</a></li>
-            <li><a href="/auth/logout">Logout</a></li>
-        </ul>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Test Portal</span>
+        </div>
+        <nav>
+            <a href="/student/dashboard" class="active">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="/student/results">
+                <i class="fas fa-chart-bar"></i>
+                View Results
+            </a>
+            <a href="/auth/logout" class="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+        </nav>
     </aside>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="container">
-            <h1>Welcome, <span th:text="${fullName}">Student Name</span>!</h1>
+    <main class="main-content">
+        <header class="top-bar">
+            <h1>Welcome, <span th:text="${fullName}">Student</span>!</h1>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
 
-            <section>
+        <div class="content-wrapper">
+            <section class="available-tests">
                 <h2>Available Tests</h2>
+                <div class="cards-grid">
+                    <div th:if="${#lists.isEmpty(tests)}" class="no-tests">
+                        <i class="fas fa-inbox"></i>
+                        <p>No available tests at the moment.<br>Please check back later!</p>
+                    </div>
 
-                <p th:if="${#lists.isEmpty(tests)}">
-                    No available tests at the moment. Please check back later!
-                </p>
-
-                <ul class="test-list">
-                    <li th:each="test : ${tests}">
-                        <a th:href="@{/student/take_test/{id}(id=${test.id})}" th:text="${test.name}"></a>
-                        <p th:text="'Start Date: ' + ${test.startDate} + ', End Date: ' + ${test.endDate}"></p>
-                        <p th:text="'Description: ' + ${test.description}"></p>
-                    </li>
-                </ul>
+                    <div th:each="test : ${tests}" class="test-card">
+                        <div class="test-card-header">
+                            <i class="fas fa-file-alt"></i>
+                            <h3 th:text="${test.name}">Test Name</h3>
+                        </div>
+                        <div class="test-card-body">
+                            <div class="test-info">
+                                <p><i class="fas fa-calendar"></i> Start:
+                                    <span th:text="${test.startDate}">Start Date</span>
+                                </p>
+                                <p><i class="fas fa-calendar-check"></i> End:
+                                    <span th:text="${test.endDate}">End Date</span>
+                                </p>
+                                <p><i class="fas fa-info-circle"></i>
+                                    <span th:text="${test.description}">Description</span>
+                                </p>
+                            </div>
+                            <a th:href="@{/student/take_test/{id}(id=${test.id})}" class="start-test-btn">
+                                Start Test <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </section>
 
-            <section>
-                <a href="/student/results" class="btn">View Your Results</a>
+            <section class="quick-actions">
+                <a href="/student/results" class="action-card">
+                    <i class="fas fa-chart-line"></i>
+                    <span>View Your Results</span>
+                </a>
             </section>
         </div>
+
         <footer>
             <p>&copy; 2024 Online Test System</p>
         </footer>
-    </div>
+    </main>
 </div>
 </body>
 </html>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Take Test</title>
     <link rel="stylesheet" href="/css/student_test.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="/js/test_validation.js" defer></script>
 </head>
 <body>
@@ -11,20 +12,23 @@
         <div class="test-header">
             <h1 class="test-title" th:text="${test.name}">Test Name</h1>
             <div class="timer-container">
-                <div class="timer-container">
-                    <div class="timer">
-                        <svg class="clock-icon" viewBox="0 0 24 24" width="24" height="24">
+                <div class="timer">
+                    <div class="timer-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="2"/>
                             <path d="M12 6v6l4 2" stroke="currentColor" fill="none" stroke-width="2"/>
                         </svg>
-                        <span>Time Remaining:</span>
-                        <span id="time-remaining" class="time-display"></span> <!-- This should display the time -->
+                    </div>
+                    <div class="timer-content">
+                        <span class="timer-label">Time Remaining</span>
+                        <span id="time-remaining" class="time-display">00:00:00</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <input type="hidden" id="test-duration" th:value="${test.duration}"/>
+
 
         <div th:if="${error}" class="error-message">
             <p th:text="${error}"></p>
@@ -43,10 +47,12 @@
                         <div class="answers-container" th:if="${question.questionType.name == 'TRUE_FALSE'}">
                             <label class="answer-option">
                                 <input type="radio" th:name="'selectedAnswers[' + ${question.id} + ']'" th:value="${1}" required>
+                                <div class="radio-custom"></div>
                                 <span class="answer-text">True</span>
                             </label>
                             <label class="answer-option">
                                 <input type="radio" th:name="'selectedAnswers[' + ${question.id} + ']'" th:value="${0}" required>
+                                <div class="radio-custom"></div>
                                 <span class="answer-text">False</span>
                             </label>
                         </div>
@@ -55,6 +61,7 @@
                             <div th:each="option, optionIndex : ${question.answerOptions}" class="multiple-choice-option">
                                 <label class="answer-option">
                                     <input type="checkbox" th:name="'selectedAnswers[' + ${question.id} + ']'" th:value="${optionIndex.index + 1}">
+                                    <div class="checkbox-custom"></div>
                                     <span class="answer-text" th:text="${option}"></span>
                                 </label>
                             </div>
@@ -78,5 +85,91 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Countdown timer logic (unchanged)
+        const timeRemainingElement = document.getElementById('time-remaining');
+        const durationInput = document.getElementById("test-duration");
+        const duration = parseInt(durationInput.value, 10); // Extract duration from hidden input
+
+        if (isNaN(duration) || duration <= 0) {
+            timeRemainingElement.textContent = "Invalid test duration.";
+            return;
+        }
+
+        let timeLeft = duration * 60; // Initial time remaining in seconds
+        const timerInterval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time is up! The test will be submitted.");
+                document.getElementById('test-form').submit(); // Auto-submit
+            } else {
+                timeRemainingElement.textContent = formatTime(timeLeft);
+                timeLeft--; // Reduce time
+            }
+        }, 1000);
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Handle form submission to convert selected answers
+        document.getElementById('test-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent normal form submission
+
+            // Clear previous error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(span => span.textContent = '');
+
+            // Check validation for each question
+            let isValid = true;
+            const selectedAnswers = [];
+
+            this.querySelectorAll('div.question').forEach((questionDiv, index) => {
+                const questionId = index + 1; // Assuming question IDs are sequential
+                const radios = questionDiv.querySelectorAll(`input[name='selectedAnswers[${questionId}]']`);
+                const checkboxes = questionDiv.querySelectorAll(`input[name='selectedAnswers[${questionId}]']`);
+
+                if (radios.length > 0) {
+                    // True/False question
+                    if (![...radios].some(radio => radio.checked)) {
+                        isValid = false;
+                        questionDiv.querySelector('.error-message').textContent = 'Please select an answer.';
+                    } else {
+                        selectedAnswers.push(parseInt([...radios].find(radio => radio.checked).value));
+                    }
+                } else if (checkboxes.length > 0) {
+                    // Multiple choice question
+                    const checkedCheckboxes = [...checkboxes].filter(checkbox => checkbox.checked);
+                    if (checkedCheckboxes.length === 0) {
+                        isValid = false;
+                        questionDiv.querySelector('.error-message').textContent = 'Please select at least one option.';
+                    } else {
+                        selectedAnswers.push(checkedCheckboxes.map(checkbox => parseInt(checkbox.value)));
+                    }
+                }
+            });
+
+            if (!isValid) {
+                alert("Please answer all questions before submitting.");
+                return; // Prevent submission if there are validation errors
+            }
+
+            // Now, you can append these selected answers to a hidden input
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'convertedAnswers'; // Field name to submit
+            hiddenInput.value = JSON.stringify(selectedAnswers); // Send array of integers as JSON string
+
+            this.appendChild(hiddenInput);
+
+            // Submit the form after manipulation
+            this.submit();
+        });
+    });
+</script>
 </body>
 </html>
